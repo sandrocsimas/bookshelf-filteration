@@ -1,0 +1,36 @@
+{
+  "name": "bookshelf-validation",
+  "version": "0.0.1",
+  "description": "Model validation plugin for Bookshelf.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sandro-csimas/bookshelf-validation.git"
+  },
+  "keywords": [
+    "bookshelf",
+    "validation",
+    "validator"
+  ],
+  "author": {
+    "name": "Sandro Simas"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sandro-csimas/bookshelf-validation/issues"
+  },
+  "dependencies": {
+    "bluebird": "*",
+    "bookshelf": "*",
+    "underscore": "*",
+    "validate.js": "*"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "knex": "*",
+    "mysql": "*"
+  }
+}
