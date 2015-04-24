@@ -1,5 +1,5 @@
 {
-  "name": "bookshelf-validation",
+  "name": "bookshelf-filteration",
   "version": "0.0.1",
   "description": "Model validation plugin for Bookshelf.",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sandro-csimas/bookshelf-validation.git"
+    "url": "https://github.com/sandro-csimas/bookshelf-filteration.git"
   },
   "keywords": [
     "bookshelf",
@@ -20,7 +20,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sandro-csimas/bookshelf-validation/issues"
+    "url": "https://github.com/sandro-csimas/bookshelf-filteration/issues"
   },
   "dependencies": {
     "bluebird": "*",
