@@ -6,17 +6,16 @@ var User = Bookshelf.Model.extend({
   idAttribute: 'id',
   tableName: 'user',
   validations: {
-    fields: {
-      first_name: {presence: true, length: {minimum: 3}},
-      last_name: {presence: true, length: {minimum: 3}},
-      email: {presence: true, email: true},
-      password: {presence: true, length: {minimum: 3}},
-      phone: {presence: true, format: /\+\d{2} \d{2} \d{4,5}\-\d{4}/}
-    },
-    filters: {
-      insert: [{name: 'first_name', required: true}, {name: 'email', required: true}, {name: 'password', required: true}, 'last_name'],
-      update: ['first_name', 'last_name', 'email', 'password', 'phone']
-    }
+    first_name: {presence: true, length: {minimum: 3}},
+    last_name: {presence: true, length: {minimum: 3}},
+    email: {presence: true, email: true},
+    password: {presence: true, length: {minimum: 3}},
+    phone: {presence: true, format: /\+\d{2} \d{2} \d{4,5}\-\d{4}/}
+  },
+  filters: {
+    insert: [{name: 'first_name', required: true}, {name: 'email', required: true}, {name: 'password', required: true}, 'last_name'],
+    update: ['first_name', 'last_name', 'email', 'password', 'phone'],
+    changeAvatar: ['avatar']
   }
 });
 
@@ -57,7 +56,7 @@ describe('validations', function() {
     });
   });
 
-  it('should filters attributes on save', function() {
+  it('should filter attributes on save', function() {
     return User.forge({first_name: 'Sandro', email: 'sandro.csimas@gmail.com', password: '123456', phone: '3333-3333'}).save().then(function(user) {
       expect(user.get('first_name')).to.equal('Sandro');
       expect(user.get('email')).to.equal('sandro.csimas@gmail.com');
@@ -75,12 +74,43 @@ describe('validations', function() {
     });
   });
 
-  it('should filters attributes on update', function() {
+  it('should filter attributes on update', function() {
     return User.forge({first_name: 'Sandro', email: 'sandro.csimas@gmail.com', password: '123456'}).save().then(function(user) {
+      // Attribute registration_date cannot be updated
       return User.forge({id: user.id, last_name: 'Simas', registration_date: new Date(2010, 4, 4)}).save();
     }).then(function(user) {
       expect(user.get('last_name')).to.equal('Simas');
       expect(user.get('registration_date')).to.be.undefined;
+    });
+  });
+
+  it('should filter attributes on update with patch option', function() {
+    return User.forge({first_name: 'Sandro', email: 'sandro.csimas@gmail.com', password: '123456'}).save().then(function(user) {
+      // Attribute registration_date cannot be updated
+      return User.forge({id: user.id}).save({last_name: 'Simas', registration_date: new Date(2010, 4, 4)}, {patch: true});
+    }).then(function(user) {
+      expect(user.get('last_name')).to.equal('Simas');
+      expect(user.get('registration_date')).to.be.undefined;
+    });
+  });
+
+  it('should filter attributes using a custom scenario on update', function() {
+    return User.forge({first_name: 'Sandro', email: 'sandro.csimas@gmail.com', password: '123456'}).save().then(function(user) {
+      // Attribute registration_date cannot be updated
+      return User.forge({id: user.id, last_name: 'Simas', verified: 1, avatar: 'sandro.jpg'}).save(null, {scenario: 'changeAvatar'});
+    }).then(function(user) {
+      expect(user.get('last_name')).to.be.undefined;
+      expect(user.get('verified')).to.be.undefined;
+      expect(user.get('avatar')).to.equal('sandro.jpg');
+    });
+  });
+
+  it('should fail when passes an invalid filter scenario', function() {
+    return User.forge({first_name: 'Sandro', email: 'sandro.csimas@gmail.com', password: '123456'}).save().then(function(user) {
+      return User.forge({id: user.id, registration_date: new Date(2010, 4, 4)}).save(null, {scenario: 'custom'});
+    }).catch(ValidationError, function(err) {
+      expect(err.errors).to.have.length(1);
+      expect(err.errors[0]).to.deep.equal({type: 'scenario.notFound', errors: ['Scenario with name custom does not exist']});
     });
   });
 });

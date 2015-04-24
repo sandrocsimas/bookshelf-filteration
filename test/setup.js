@@ -5,7 +5,7 @@ var knex = require('knex')({
     host: '127.0.0.1',
     user: 'test',
     password: 'test',
-    database: 'bookshelf_validation'
+    database: 'bookshelf_filteration'
   }
 });
 var Bookshelf = require('bookshelf')(knex);
