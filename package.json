@@ -1,35 +1,40 @@
 {
   "name": "bookshelf-filteration",
   "version": "0.0.1",
-  "description": "Model validation plugin for Bookshelf.",
+  "description": "Bookshelf plugin that filters and validates model attributes.",
+  "author": "Sandro Simas",
+  "license": "MIT",
+  "keywords": [
+    "bookshelf",
+    "validation",
+    "validator",
+    "filter",
+    "plugin"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "mocha"
   },
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "homepage": "https://github.com/sandro-csimas/bookshelf-filteration",
   "repository": {
     "type": "git",
     "url": "https://github.com/sandro-csimas/bookshelf-filteration.git"
   },
-  "keywords": [
-    "bookshelf",
-    "validation",
-    "validator"
-  ],
-  "author": {
-    "name": "Sandro Simas"
-  },
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sandro-csimas/bookshelf-filteration/issues"
   },
   "dependencies": {
     "bluebird": "*",
-    "bookshelf": "*",
     "underscore": "*",
     "validate.js": "*"
   },
   "devDependencies": {
     "chai": "*",
+    "bookshelf": "*",
     "knex": "*",
     "mysql": "*"
   }
