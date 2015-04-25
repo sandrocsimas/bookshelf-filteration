@@ -67,6 +67,7 @@ validate({first_name: 'Sandro', last_name: 'Simas'}, {length: {minimum: 3}});
 validate({first_name: 'Sandro', last_name: null}, {length: {minimum: 3}});
 // [] OK, last_name in user table will be updated to null
 ````
+````
 validate({first_name: 'Sandro', last_name: ''}, {length: {minimum: 3}});
 // [] Not OK because we expect a validation error since 0 length is less than 3
 ````
