@@ -76,9 +76,9 @@ describe('validations', function() {
       throw new Error('User should not be saved');
     }).catch(ValidationError, function(err) {
       expect(err.errors).to.have.length(3);
-      expect(err.errors[0]).to.deep.equal({type: 'required', attribute: 'first_name', errors: ['Attribute first_name is required']});
-      expect(err.errors[1]).to.deep.equal({type: 'required', attribute: 'email', errors: ['Attribute email is required']});
-      expect(err.errors[2]).to.deep.equal({type: 'required', attribute: 'password', errors: ['Attribute password is required']});
+      expect(err.errors[0]).to.deep.equal({type: 'required', attribute: 'first_name', messages: ['Attribute first_name is required']});
+      expect(err.errors[1]).to.deep.equal({type: 'required', attribute: 'email', messages: ['Attribute email is required']});
+      expect(err.errors[2]).to.deep.equal({type: 'required', attribute: 'password', messages: ['Attribute password is required']});
     });
   });
 
@@ -87,7 +87,7 @@ describe('validations', function() {
       throw new Error('User should not be saved');
     }).catch(ValidationError, function(err) {
       expect(err.errors).to.have.length(1);
-      expect(err.errors[0]).to.deep.equal({type: 'required', attribute: 'password', errors: ['Attribute password is required']});
+      expect(err.errors[0]).to.deep.equal({type: 'required', attribute: 'password', messages: ['Attribute password is required']});
     });
   });
 
@@ -96,8 +96,8 @@ describe('validations', function() {
       throw new Error('User should not be saved');
     }).catch(ValidationError, function(err) {
       expect(err.errors).to.have.length(2);
-      expect(err.errors[0]).to.deep.equal({type: 'invalid', attribute: 'password', errors: ['Password is too short (minimum is 3 characters)']});
-      expect(err.errors[1]).to.deep.equal({type: 'invalid', attribute: 'last_name', errors: ['Last name is too short (minimum is 3 characters)']});
+      expect(err.errors[0]).to.deep.equal({type: 'invalid', attribute: 'password', messages: ['Password is too short (minimum is 3 characters)']});
+      expect(err.errors[1]).to.deep.equal({type: 'invalid', attribute: 'last_name', messages: ['Last name is too short (minimum is 3 characters)']});
     });
   });
 
@@ -106,7 +106,7 @@ describe('validations', function() {
       return models.User.forge({id: user.id, registration_date: new Date(2010, 4, 4)}).save();
     }).catch(ValidationError, function(err) {
       expect(err.errors).to.have.length(1);
-      expect(err.errors[0]).to.deep.equal({type: 'filter.empty', errors: ['No attributes remaining after filtering']});
+      expect(err.errors[0]).to.deep.equal({type: 'noRemainingAttributes', messages: ['No attributes remaining after filtering']});
     });
   });
 
@@ -115,7 +115,7 @@ describe('validations', function() {
       return models.User.forge({id: user.id, registration_date: new Date(2010, 4, 4)}).save(null, {scenario: 'custom'});
     }).catch(ValidationError, function(err) {
       expect(err.errors).to.have.length(1);
-      expect(err.errors[0]).to.deep.equal({type: 'scenario.notfound', errors: ['Scenario with name custom does not exist']});
+      expect(err.errors[0]).to.deep.equal({type: 'scenario.notfound', messages: ['Scenario with name custom does not exist']});
     });
   });
 
@@ -124,7 +124,7 @@ describe('validations', function() {
       throw new Error('User should not be saved');
     }).catch(ValidationError, function(err) {
       expect(err.errors).to.have.length(1);
-      expect(err.errors[0]).to.deep.equal({type: 'invalid', attribute: 'last_name', errors: ['Last name can\'t be blank']});
+      expect(err.errors[0]).to.deep.equal({type: 'invalid', attribute: 'last_name', messages: ['Last name can\'t be blank']});
     });
   });
 
