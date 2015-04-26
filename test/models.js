@@ -39,8 +39,14 @@ var UserWithNoValidations = Bookshelf.Model.extend({
   }
 });
 
+var UserWithNoFiltersAndValidations = Bookshelf.Model.extend({
+  idAttribute: 'id',
+  tableName: 'user'
+});
+
 module.exports = {
   User: User,
   UserWithNoFilters: UserWithNoFilters,
-  UserWithNoValidations: UserWithNoValidations
+  UserWithNoValidations: UserWithNoValidations,
+  UserWithNoFiltersAndValidations: UserWithNoFiltersAndValidations
 };

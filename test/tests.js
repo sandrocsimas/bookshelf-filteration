@@ -21,6 +21,17 @@ describe('validations', function() {
     });
   });
 
+  it('should save user wihout filter and validate', function() {
+    return models.UserWithNoFiltersAndValidations.forge({first_name: 'Sandro', last_name: 'Simas', email: 'sandro.csimas@gmail.com', password: '123456', phone: '+55 71 3333-3333', avatar: 'sandro.jpg'}).save().then(function(user) {
+      expect(user.get('first_name')).to.equal('Sandro');
+      expect(user.get('last_name')).to.equal('Simas');
+      expect(user.get('email')).to.equal('sandro.csimas@gmail.com');
+      expect(user.get('password')).to.equal('123456');
+      expect(user.get('phone')).to.equal('+55 71 3333-3333');
+      expect(user.get('avatar')).to.equal('sandro.jpg');
+    });
+  });
+
   it('should filter attributes on save', function() {
     return models.User.forge({first_name: 'Sandro', email: 'sandro.csimas@gmail.com', password: '123456', phone: '3333-3333'}).save().then(function(user) {
       expect(user.get('first_name')).to.equal('Sandro');
