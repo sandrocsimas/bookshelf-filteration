@@ -3,15 +3,23 @@ Sometime you don't want to save all attributes of a model. There are cases that 
 
 Bookshelf-filteration also uses validate.js to validate your model attributes with the difference that only filtered attributes will be validated in the case of filter presence.
 
+# Configuration
+You can set Bookshelf Filteration to use insert and update methods as filter scenarios when no scenario is provided.
+````
+var filteration = require('bookshelf-filteration');
+filteration.useMethodFilter(true);
+Bookshelf.plugin(filteration);
+````
+
 # Filtering attributes example:
 ````
 var User = Bookshelf.Model.extend({
   idAttribute: 'id',
   tableName: 'user',
   filters: {
-    // Insert scenario (used when a model will be inserted)
+    // Insert scenario (used when a model will be inserted and you configured to use method filter)
     insert: [{name: 'first_name', required: true}, {name: 'email', required: true}, {name: 'password', required: true}, 'last_name'],
-    // Update scenario (used when a model will be updated)
+    // Update scenario (used when a model will be updated and you configured to use method filter)
     update: ['first_name', 'last_name', 'email', 'password', 'phone'],
     // Custom scenario (used when passes the option scenario)
     changeAvatar: ['avatar']
@@ -61,14 +69,14 @@ The presence validation considers that null, blank are valid, regardless of othe
 Example using validate.js:
 ````
 validate({first_name: 'Sandro', last_name: 'Simas'}, {length: {minimum: 3}});
-// [] OK, last_name in user table will be updated to 'Simas'
+// [] No errors and last_name in user table will be updated to 'Simas'
 ````
 ````
 validate({first_name: 'Sandro', last_name: null}, {length: {minimum: 3}});
-// [] OK, last_name in user table will be updated to null
+// [] No errors and last_name in user table will be updated to null
 ````
 ````
 validate({first_name: 'Sandro', last_name: ''}, {length: {minimum: 3}});
-// [] Not OK because we expect a validation error since 0 length is less than 3
+// [] No errors but we expect a validation error since 0 length is less than 3
 ````
 
