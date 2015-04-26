@@ -71,6 +71,17 @@ describe('validations', function() {
     });
   });
 
+  it('should filter attributes of a model even if has no validations', function() {
+    return models.UserWithNoValidations.forge({first_name: 'S', last_name: 'S', email: 'sandro@simas', password: '1', phone: 'SIMAS', avatar: 'sandro.jpg'}).save().then(function(user) {
+      expect(user.get('first_name')).to.equal('S');
+      expect(user.get('last_name')).to.equal('S');
+      expect(user.get('email')).to.equal('sandro@simas');
+      expect(user.get('password')).to.equal('1');
+      expect(user.get('phone')).to.be.undefined;
+      expect(user.get('avatar')).to.be.undefined;
+    });
+  });
+
   it('should fail with required fields errors when passes an empty object', function() {
     return models.User.forge({}).save().then(function() {
       throw new Error('User should not be saved');
@@ -106,7 +117,7 @@ describe('validations', function() {
       return models.User.forge({id: user.id, registration_date: new Date(2010, 4, 4)}).save();
     }).catch(ValidationError, function(err) {
       expect(err.errors).to.have.length(1);
-      expect(err.errors[0]).to.deep.equal({type: 'noRemainingAttributes', messages: ['No attributes remaining after filtering']});
+      expect(err.errors[0]).to.deep.equal({type: 'nothingToSave', messages: ['No attributes remaining after filtering']});
     });
   });
 
