@@ -33,10 +33,11 @@ describe('validations', function() {
   });
 
   it('should filter attributes on save', function() {
-    return models.User.forge({first_name: 'Sandro', email: 'sandro.csimas@gmail.com', password: '123456', phone: '3333-3333'}).save().then(function(user) {
+    return models.User.forge({first_name: 'Sandro', email: 'sandro.csimas@gmail.com', password: '123456', phone: '3333-3333', verified: 0}).save().then(function(user) {
       expect(user.get('first_name')).to.equal('Sandro');
       expect(user.get('email')).to.equal('sandro.csimas@gmail.com');
       expect(user.get('password')).to.equal('123456');
+      expect(user.get('verified')).to.equal(0);
       expect(user.get('phone')).to.be.undefined;
     });
   });

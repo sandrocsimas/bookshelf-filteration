@@ -11,7 +11,7 @@ var User = Bookshelf.Model.extend({
     phone: {presence: true, format: /\+\d{2} \d{2} \d{4,5}\-\d{4}/}
   },
   filters: {
-    insert: [{name: 'first_name', required: true}, {name: 'email', required: true}, {name: 'password', required: true}, 'last_name'],
+    insert: [{name: 'first_name', required: true}, {name: 'email', required: true}, {name: 'password', required: true}, 'last_name', 'verified'],
     update: ['first_name', 'last_name', 'email', 'password', 'phone'],
     changeAvatar: ['avatar']
   }
@@ -33,7 +33,7 @@ var UserWithNoValidations = Bookshelf.Model.extend({
   idAttribute: 'id',
   tableName: 'user',
   filters: {
-    insert: [{name: 'first_name', required: true}, {name: 'email', required: true}, {name: 'password', required: true}, 'last_name'],
+    insert: [{name: 'first_name', required: true}, {name: 'email', required: true}, {name: 'password', required: true}, 'last_name', 'verified'],
     update: ['first_name', 'last_name', 'email', 'password', 'phone'],
     changeAvatar: ['avatar']
   }

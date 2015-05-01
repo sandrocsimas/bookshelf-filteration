@@ -1,6 +1,6 @@
 {
   "name": "bookshelf-filteration",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Bookshelf plugin that filters and validates model attributes.",
   "author": "Sandro Simas",
   "license": "MIT",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "bluebird": "*",
-    "underscore": "*",
+    "lodash": "*",
     "validate.js": "*"
   },
   "devDependencies": {
