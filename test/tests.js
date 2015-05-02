@@ -21,7 +21,7 @@ describe('validations', function() {
     });
   });
 
-  it('should save user wihout filter and validate', function() {
+  it('should save user wihout filter and validations', function() {
     return models.UserWithNoFiltersAndValidations.forge({first_name: 'Sandro', last_name: 'Simas', email: 'sandro.csimas@gmail.com', password: '123456', phone: '+55 71 3333-3333', avatar: 'sandro.jpg'}).save().then(function(user) {
       expect(user.get('first_name')).to.equal('Sandro');
       expect(user.get('last_name')).to.equal('Simas');
@@ -64,22 +64,11 @@ describe('validations', function() {
 
   it('should filter attributes using a custom scenario on update', function() {
     return models.User.forge({first_name: 'Sandro', email: 'sandro.csimas@gmail.com', password: '123456'}).save().then(function(user) {
-      // Attribute registration_date cannot be updated
       return models.User.forge({id: user.id, last_name: 'Simas', verified: 1, avatar: 'sandro.jpg'}).save(null, {scenario: 'changeAvatar'});
     }).then(function(user) {
       expect(user.get('last_name')).to.be.undefined;
       expect(user.get('verified')).to.be.undefined;
       expect(user.get('avatar')).to.equal('sandro.jpg');
-    });
-  });
-
-  it('should validate model without filtering attributes because model has no filters', function() {
-    return models.UserWithNoFilters.forge({first_name: 'Sandro', last_name: 'Simas', email: 'sandro.csimas@gmail.com', password: '123456', phone: '+55 71 3333-3333'}).save().then(function(user) {
-      expect(user.get('first_name')).to.equal('Sandro');
-      expect(user.get('last_name')).to.equal('Simas');
-      expect(user.get('email')).to.equal('sandro.csimas@gmail.com');
-      expect(user.get('password')).to.equal('123456');
-      expect(user.get('phone')).to.equal('+55 71 3333-3333');
     });
   });
 
@@ -142,12 +131,12 @@ describe('validations', function() {
     });
   });
 
-  it('should fail when model has no filters and fields are not valid', function() {
-    return models.UserWithNoFilters.forge({first_name: 'Sandro', email: 'sandro.csimas@gmail.com', password: '123456', phone: '+55 71 3333-3333'}).save().then(function(user) {
+  it('should validate only instance attributes when model has no filters', function() {
+    return models.UserWithNoFilters.forge({first_name: 'Sandro', email: 'sandro.csimas@gmail.com', password: '123456', phone: '3333-3333', verified: 0}).save().then(function(user) {
       throw new Error('User should not be saved');
     }).catch(ValidationError, function(err) {
       expect(err.errors).to.have.length(1);
-      expect(err.errors[0]).to.deep.equal({type: 'invalid', attribute: 'last_name', messages: ['Last name can\'t be blank']});
+      expect(err.errors[0]).to.deep.equal({attribute: 'phone', type: 'invalid', messages: ['Phone is invalid']});
     });
   });
 

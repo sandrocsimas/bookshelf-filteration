@@ -1,7 +1,7 @@
 # Bookshelf Filteration (Filter + Validation)
 Sometimes you don't want to save all attributes of a model. There are cases that you want to save specific attributes according to scenario, for example an user update, an user creation, or when you want to force a avatar only edition.
 
-Bookshelf-filteration also uses validate.js to validate your model attributes with the difference that only filtered attributes will be validated in the case of filter presence.
+Bookshelf-filteration also uses validate.js to validate your model attributes with the difference that only filtered attributes will be validated.
 
 # Installation
 ````
@@ -84,4 +84,3 @@ validate({first_name: 'Sandro', last_name: null}, {length: {minimum: 3}});
 validate({first_name: 'Sandro', last_name: ''}, {length: {minimum: 3}});
 // [] No errors but we expect a validation error since 0 length is less than 3
 ````
-
