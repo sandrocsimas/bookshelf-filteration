@@ -1,5 +1,5 @@
 # Bookshelf Filteration (Filter + Validation)
-Sometimes you don't want to save all attributes of a model. There are cases that you want to save specific attributes according to scenario, for example an user update, an user creation, or when you want to force a avatar only edition.
+Sometimes you don't want to save all attributes of a model. There are cases that you want to save specific attributes according to scenario, for example an user update, an user creation, or when you want to force a avatar only edition. Bookshelf Filteration make it easy!
 
 Bookshelf-filteration also uses validate.js to validate your model attributes with the difference that only filtered attributes will be validated.
 
@@ -16,7 +16,10 @@ filteration.useMethodFilter(true);
 Bookshelf.plugin(filteration);
 ````
 
-# Filtering attributes example:
+# Filtering attributes
+You can provide lists of attributes that will be used to do inserts or updates according to scenario provided in save options. Attributes that are not contained in the list are excluded from model and will not be inserted or updated. This list can contain Strings or Objects with name and required attributes.
+The required attribute defines if the attribute is mandatory for that scenario and will throw ValidationError when an attribute is required, but is not present on model attributes.
+
 ````
 var User = Bookshelf.Model.extend({
   idAttribute: 'id',
@@ -33,11 +36,12 @@ var User = Bookshelf.Model.extend({
 ````
 
 # Validating attributes example:
+The validation will be applied only to remaining attributes after filtering. If filters are not provided, only model attributes will be considered, in other words, not all validations declared will be used.
+
 ````
 var User = Bookshelf.Model.extend({
   idAttribute: 'id',
   tableName: 'user',
-  // With no filters all attributes will be validated, independent of scenatio.
   validations: {
     first_name: {presence: true, length: {minimum: 3}},
     last_name: {length: {minimum: 3}},
@@ -66,21 +70,4 @@ var User = Bookshelf.Model.extend({
     changeAvatar: ['avatar']
   }
 });
-````
-
-# Why the required feature if validate.js has the presence validation?
-
-The presence validation considers that null, blank are valid, regardless of others attribute validations. The problem is that sometimes you want to accept null values but not blanks.
-Example using validate.js:
-````
-validate({first_name: 'Sandro', last_name: 'Simas'}, {length: {minimum: 3}});
-// [] No errors and last_name in user table will be updated to 'Simas'
-````
-````
-validate({first_name: 'Sandro', last_name: null}, {length: {minimum: 3}});
-// [] No errors and last_name in user table will be updated to null
-````
-````
-validate({first_name: 'Sandro', last_name: ''}, {length: {minimum: 3}});
-// [] No errors but we expect a validation error since 0 length is less than 3
 ````

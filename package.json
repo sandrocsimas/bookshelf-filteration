@@ -1,6 +1,6 @@
 {
   "name": "bookshelf-filteration",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Bookshelf plugin that filters and validates model attributes.",
   "author": "Sandro Simas",
   "license": "MIT",
