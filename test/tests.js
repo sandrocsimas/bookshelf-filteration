@@ -1,24 +1,12 @@
 var ValidationError = require('../').ValidationError,
-    Bookshelf       = require('./setup'),
+    setup           = require('./setup'),
     models          = require('./models'),
     expect          = require('chai').expect;
 
 
 describe('validations', function() {
   before(function() {
-    return Bookshelf.knex.schema.dropTableIfExists('user').then(function() {
-      return Bookshelf.knex.schema.createTable('user', function(table) {
-        table.increments('id').primary();
-        table.string('first_name').notNullable();
-        table.string('last_name');
-        table.string('phone');
-        table.string('email').notNullable();
-        table.string('password').notNullable();
-        table.string('avatar');
-        table.boolean('verified').defaultTo(0);
-        table.timestamp('registration_date').defaultTo(Bookshelf.knex.raw('now()'));
-      });
-    });
+    return setup.createSchema();
   });
 
   it('should save user wihout filter and validations', function() {
@@ -59,6 +47,35 @@ describe('validations', function() {
     }).then(function(user) {
       expect(user.get('last_name')).to.equal('Simas');
       expect(user.get('registration_date')).to.be.undefined;
+    });
+  });
+
+  it('should set attribute to null when notBlank validation is setted to true', function() {
+    return models.User.forge({first_name: 'Sandro', last_name: 'Simas', email: 'sandro.csimas@gmail.com', password: '123456'}).save().then(function(user) {
+      // Attribute can be setted to null but not to blank because of notBlank validation
+      return models.User.forge({id: user.id}).save({last_name: null}, {patch: true});
+    }).then(function(user) {
+      expect(user.get('last_name')).to.be.null;
+    });
+  });
+
+  it('should not update attribute to empty when notBlank validation is setted to true', function() {
+    return models.User.forge({first_name: 'Sandro', last_name: 'Simas', email: 'sandro.csimas@gmail.com', password: '123456'}).save().then(function(user) {
+      // Attribute can be setted to null but not to empty because of notBlank validation
+      return models.User.forge({id: user.id}).save({last_name: ''}, {patch: true});
+    }).catch(ValidationError, function(err) {
+      expect(err.errors).to.have.length(1);
+      expect(err.errors[0]).to.deep.equal({type: 'invalid', attribute: 'last_name', messages: ['Last name can\'t be blank']});
+    });
+  });
+
+  it('should not update attribute to blank when notBlank validation is setted to true', function() {
+    return models.User.forge({first_name: 'Sandro', last_name: 'Simas', email: 'sandro.csimas@gmail.com', password: '123456'}).save().then(function(user) {
+      // Attribute can be setted to null but not to blank because of notBlank validation
+      return models.User.forge({id: user.id}).save({last_name: '       '}, {patch: true});
+    }).catch(ValidationError, function(err) {
+      expect(err.errors).to.have.length(1);
+      expect(err.errors[0]).to.deep.equal({type: 'invalid', attribute: 'last_name', messages: ['Last name can\'t be blank']});
     });
   });
 

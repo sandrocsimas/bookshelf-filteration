@@ -44,12 +44,22 @@ var User = Bookshelf.Model.extend({
   tableName: 'user',
   validations: {
     first_name: {presence: true, length: {minimum: 3}},
-    last_name: {length: {minimum: 3}},
+    last_name: {notBlank: true, length: {minimum: 3}},
     email: {presence: true, email: true},
     password: {presence: true, length: {minimum: 3}},
     phone: {format: /\+\d{2} \d{2} \d{4,5}\-\d{4}/}
   }
 });
+````
+- The custom validation notBlank
+Validate.js provides a lot of useful validations, but they considered that empty strings are valid values, even if an length validation with minimum length is provided. The problem is that sometimes you don't want to treat blank as valid value. Length validation is an example of this situation.
+````
+validate({first_name: 'Sandro', last_name: ''}, {length: {minimum: 3}});
+// [] No errors, but we expect a validation error since 0 length is less than 3.
+````
+````
+validate({first_name: 'Sandro', last_name: ''}, {notBlank: true, length: {minimum: 3}});
+// ["Last name can't be blank"] Now we have the correct behavior. You can set last_name to null, but not blank.
 ````
 
 # Combining filters and validations example:
@@ -59,7 +69,7 @@ var User = Bookshelf.Model.extend({
   tableName: 'user',
   validations: {
     first_name: {presence: true, length: {minimum: 3}},
-    last_name: {length: {minimum: 3}},
+    last_name: {notBlank: true, length: {minimum: 3}},
     email: {presence: true, email: true},
     password: {presence: true, length: {minimum: 3}},
     phone: {format: /\+\d{2} \d{2} \d{4,5}\-\d{4}/}
