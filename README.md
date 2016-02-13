@@ -1,5 +1,5 @@
-# Bookshelf Filteration (Filter + Validation)
-Sometimes you don't want to save all attributes of a model. There are cases that you want to save specific attributes according to scenario, for example an user update, an user creation, or when you want to force a avatar only edition. Bookshelf Filteration make it easy!
+# Bookshelf Filteration (Bookshelf + Filter + Validation)
+Sometimes you don't want to save all attributes of a model. There are cases that you want to save specific attributes according to some scenario, for example an user update, an user creation, or when you want to force to update only the user avatar. Bookshelf Filteration make it easy!
 
 Bookshelf-filteration also uses validate.js to validate your model attributes with the difference that only filtered attributes will be validated.
 
@@ -12,7 +12,7 @@ npm install bookshelf-filteration
 You can set Bookshelf Filteration to use insert and update methods as filter scenarios when no scenario is provided.
 ````
 var filteration = require('bookshelf-filteration');
-filteration.useMethodFilter(true);
+filteration.useDefaultFilters(true);
 Bookshelf.plugin(filteration);
 ````
 

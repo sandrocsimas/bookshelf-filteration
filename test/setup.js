@@ -11,7 +11,7 @@ var knex = require('knex')({
 
 var Bookshelf = require('bookshelf')(knex);
 
-filteration.useMethodFilter(true);
+filteration.useDefaultFilters(true);
 Bookshelf.plugin(filteration.plugin);
 
 exports.Bookshelf = Bookshelf;

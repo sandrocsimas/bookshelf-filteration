@@ -1,5 +1,5 @@
 module.exports = {
   plugin: require('./lib/plugin'),
-  useMethodFilter: require('./lib/config').useMethodFilter,
+  useDefaultFilters: require('./lib/config').useDefaultFilters,
   ValidationError: require('./lib/validationError')
 };
