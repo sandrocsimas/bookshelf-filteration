@@ -51,7 +51,8 @@ var User = Bookshelf.Model.extend({
   }
 });
 ````
-- The custom validation notBlank
+**The custom validation notBlank**
+
 Validate.js provides a lot of useful validations, but they considered that empty strings are valid values, even if an length validation with minimum length is provided. The problem is that sometimes you don't want to treat blank as valid value. Length validation is an example of this situation.
 ````
 validate({first_name: 'Sandro', last_name: ''}, {length: {minimum: 3}});
