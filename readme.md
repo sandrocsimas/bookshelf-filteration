@@ -47,7 +47,7 @@ var User = Bookshelf.Model.extend({
     last_name: {length: {minimum: 3}},
     email: {presence: true, email: true},
     password: {presence: true, length: {minimum: 3}},
-    phone: {format: /\+\d{2} \d{2} \d{4,5}\-\d{4}/}
+    phone: {format: /\+\d{8,16}/}
   }
 });
 ````
@@ -62,7 +62,7 @@ var User = Bookshelf.Model.extend({
     last_name: {length: {minimum: 3}},
     email: {presence: true, email: true},
     password: {presence: true, length: {minimum: 3}},
-    phone: {format: /\+\d{2} \d{2} \d{4,5}\-\d{4}/}
+    phone: {format: /\+\d{8,16}/}
   },
   filters: {
     insert: [{name: 'first_name', required: true}, {name: 'email', required: true}, {name: 'password', required: true}, 'last_name'],

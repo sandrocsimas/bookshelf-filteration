@@ -2,51 +2,51 @@ var Bookshelf = require('./setup').Bookshelf;
 
 var User = Bookshelf.Model.extend({
   idAttribute: 'id',
+  tableName: 'user'
+});
+
+var UserWithValidations = Bookshelf.Model.extend({
+  idAttribute: 'id',
   tableName: 'user',
   validations: {
     first_name: {presence: true, length: {minimum: 3}},
     last_name: {length: {minimum: 3}},
-    email: {presence: true, email: true},
-    password: {presence: true, length: {minimum: 3}},
-    phone: {format: /\+\d{2} \d{2} \d{4,5}\-\d{4}/}
+    email: {email: true},
+    phone: {format: /\+\d{8,16}/},
+    password: {presence: true, length: {minimum: 3}}
+  }
+});
+
+var UserWithFilters = Bookshelf.Model.extend({
+  idAttribute: 'id',
+  tableName: 'user',
+  filters: {
+    insert: [{name: 'first_name', required: true}, {name: 'password', required: true}, 'last_name', 'email', 'phone'],
+    update: ['first_name', 'last_name', 'email', 'phone'],
+    changeAvatar: ['avatar']
+  }
+});
+
+var UserWithFiltersAndValidations = Bookshelf.Model.extend({
+  idAttribute: 'id',
+  tableName: 'user',
+  validations: {
+    first_name: {presence: true, length: {minimum: 3}},
+    last_name: {length: {minimum: 3}},
+    email: {email: true},
+    phone: {format: /\+\d{8,16}/},
+    password: {presence: true, length: {minimum: 3}}
   },
   filters: {
-    insert: [{name: 'first_name', required: true}, {name: 'email', required: true}, {name: 'password', required: true}, 'last_name', 'verified'],
-    update: ['first_name', 'last_name', 'email', 'password', 'phone'],
+    insert: [{name: 'first_name', required: true}, {name: 'password', required: true}, 'last_name', 'email', 'phone'],
+    update: ['first_name', 'last_name', 'email', 'phone'],
     changeAvatar: ['avatar']
   }
-});
-
-var UserWithNoFilters = Bookshelf.Model.extend({
-  idAttribute: 'id',
-  tableName: 'user',
-  validations: {
-    first_name: {presence: true, length: {minimum: 3}},
-    last_name: {length: {minimum: 3}},
-    email: {presence: true, email: true},
-    password: {presence: true, length: {minimum: 3}},
-    phone: {format: /\+\d{2} \d{2} \d{4,5}\-\d{4}/}
-  }
-});
-
-var UserWithNoValidations = Bookshelf.Model.extend({
-  idAttribute: 'id',
-  tableName: 'user',
-  filters: {
-    insert: [{name: 'first_name', required: true}, {name: 'email', required: true}, {name: 'password', required: true}, 'last_name', 'verified'],
-    update: ['first_name', 'last_name', 'email', 'password', 'phone'],
-    changeAvatar: ['avatar']
-  }
-});
-
-var UserWithNoFiltersAndValidations = Bookshelf.Model.extend({
-  idAttribute: 'id',
-  tableName: 'user'
 });
 
 module.exports = {
   User: User,
-  UserWithNoFilters: UserWithNoFilters,
-  UserWithNoValidations: UserWithNoValidations,
-  UserWithNoFiltersAndValidations: UserWithNoFiltersAndValidations
+  UserWithFilters: UserWithFilters,
+  UserWithValidations: UserWithValidations,
+  UserWithFiltersAndValidations: UserWithFiltersAndValidations
 };
