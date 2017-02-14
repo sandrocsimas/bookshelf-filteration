@@ -17,7 +17,7 @@ Bookshelf.plugin(filteration);
 ````
 
 # Filtering attributes
-You can provide lists of attributes that will be used to do inserts or updates according to scenario provided in save options. Attributes that are not contained in the list are excluded from model and will not be inserted or updated. This list can contain Strings or Objects with name and required attributes.
+You can provide lists of attributes that will be used to do inserts or updates according to scenario provided in save options. Attributes that are not present in list are excluded from model and will not be inserted or updated. This list can contain Strings or Objects with name and required attributes.
 The required attribute defines if the attribute is mandatory for that scenario and will throw ValidationError when an attribute is required, but is not present on model attributes.
 
 ````
