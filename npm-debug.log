@@ -1,0 +1,109 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/home/sandro/tools/node-v6.2.2-linux-x64/bin/node',
+1 verbose cli   '/home/sandro/tools/node/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@3.9.5
+3 info using node@v6.2.2
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/home/sandro/bookshelf-filteration',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /home/sandro/.npm/bookshelf-filteration/0.1.10/package.tgz not in flight; packing
+9 verbose correctMkdir /home/sandro/.npm correctMkdir not in flight; initializing
+10 info lifecycle bookshelf-filteration@0.1.10~prepublish: bookshelf-filteration@0.1.10
+11 silly lifecycle bookshelf-filteration@0.1.10~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/home/sandro/.npm/bookshelf-filteration/0.1.10/package.tgz',
+12 verbose tar pack   '/home/sandro/bookshelf-filteration' ]
+13 verbose tarball /home/sandro/.npm/bookshelf-filteration/0.1.10/package.tgz
+14 verbose folder /home/sandro/bookshelf-filteration
+15 verbose addLocalTarball adding from inside cache /home/sandro/.npm/bookshelf-filteration/0.1.10/package.tgz
+16 verbose correctMkdir /home/sandro/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd bookshelf-filteration@0.1.10
+18 verbose afterAdd /home/sandro/.npm/bookshelf-filteration/0.1.10/package/package.json not in flight; writing
+19 verbose correctMkdir /home/sandro/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /home/sandro/.npm/bookshelf-filteration/0.1.10/package/package.json written
+21 silly publish { name: 'bookshelf-filteration',
+21 silly publish   version: '0.1.10',
+21 silly publish   description: 'Bookshelf plugin that filters and validates model attributes.',
+21 silly publish   author: { name: 'Sandro Simas' },
+21 silly publish   license: 'MIT',
+21 silly publish   keywords: [ 'bookshelf', 'validation', 'validator', 'filter', 'plugin' ],
+21 silly publish   main: 'index.js',
+21 silly publish   scripts: { test: 'mocha' },
+21 silly publish   directories: { lib: 'lib', test: 'test' },
+21 silly publish   homepage: 'https://github.com/sandro-csimas/bookshelf-filteration',
+21 silly publish   repository:
+21 silly publish    { type: 'git',
+21 silly publish      url: 'git+https://github.com/sandro-csimas/bookshelf-filteration.git' },
+21 silly publish   bugs: { url: 'https://github.com/sandro-csimas/bookshelf-filteration/issues' },
+21 silly publish   dependencies: { bluebird: '*', lodash: '*', 'validate.js': '*' },
+21 silly publish   devDependencies: { bookshelf: '*', chai: '*', knex: '*', mocha: '*', mysql: '*' },
+21 silly publish   readme: '# Bookshelf Filteration (Bookshelf + Filter + Validation)\nSometimes you don\'t want to save all attributes of a model. There are cases that you want to save specific attributes according to some scenario, for example an user update, an user creation, or when you want to force to update only the user avatar. Bookshelf Filteration make it easy!\n\nBookshelf-filteration also uses validate.js to validate your model attributes with the difference that only filtered attributes will be validated.\n\n# Installation\n````\nnpm install bookshelf-filteration\n````\n\n# Configuration\nYou can set Bookshelf Filteration to use insert and update methods as filter scenarios when no scenario is provided.\n````\nvar filteration = require(\'bookshelf-filteration\');\nfilteration.useDefaultFilters(true);\nBookshelf.plugin(filteration);\n````\n\n# Filtering attributes\nYou can provide lists of attributes that will be used to do inserts or updates according to scenario provided in save options. Attributes that are not present in list are excluded from model and will not be inserted or updated. This list can contain Strings or Objects with name and required attributes.\nThe required attribute defines if the attribute is mandatory for that scenario and will throw ValidationError when an attribute is required, but is not present on model attributes.\n\n````\nvar User = Bookshelf.Model.extend({\n  idAttribute: \'id\',\n  tableName: \'user\',\n  filters: {\n    // Insert scenario (used when a model will be inserted and you configured to use method filter)\n    insert: [{name: \'first_name\', required: true}, {name: \'email\', required: true}, {name: \'password\', required: true}, \'last_name\'],\n    // Update scenario (used when a model will be updated and you configured to use method filter)\n    update: [\'first_name\', \'last_name\', \'email\', \'password\', \'phone\'],\n    // Custom scenario (used when passes the option scenario)\n    changeAvatar: [\'avatar\']\n  }\n});\n````\n\n# Validating attributes example:\nThe validation will be applied only to remaining attributes after filtering. If filters are not provided, only model attributes will be considered, in other words, not all validations declared will be used.\n\n````\nvar User = Bookshelf.Model.extend({\n  idAttribute: \'id\',\n  tableName: \'user\',\n  validations: {\n    first_name: {presence: true, length: {minimum: 3}},\n    last_name: {length: {minimum: 3}},\n    email: {presence: true, email: true},\n    password: {presence: true, length: {minimum: 3}},\n    phone: {format: /\\+\\d{8,16}/}\n  }\n});\n````\n\n# Combining filters and validations example:\n````\nvar User = Bookshelf.Model.extend({\n  idAttribute: \'id\',\n  tableName: \'user\',\n  validations: {\n    first_name: {presence: true, length: {minimum: 3}},\n    last_name: {length: {minimum: 3}},\n    email: {presence: true, email: true},\n    password: {presence: true, length: {minimum: 3}},\n    phone: {format: /\\+\\d{8,16}/}\n  },\n  filters: {\n    insert: [{name: \'first_name\', required: true}, {name: \'email\', required: true}, {name: \'password\', required: true}, \'last_name\'],\n    update: [\'first_name\', \'last_name\', \'email\', \'password\', \'phone\'],\n    changeAvatar: [\'avatar\']\n  }\n});\n````',
+21 silly publish   readmeFilename: 'readme.md',
+21 silly publish   gitHead: '0ac932d76317fa51b665a34265dbcd37cead829a',
+21 silly publish   _id: 'bookshelf-filteration@0.1.10',
+21 silly publish   _shasum: 'e4ff3af2c816006dbdcdb2621ded1469e7409d53',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name bookshelf-filteration
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'bookshelf-filteration',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   name: 'bookshelf-filteration',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/bookshelf-filteration
+28 verbose publish registryBase https://registry.npmjs.org/
+29 silly publish uploading /home/sandro/.npm/bookshelf-filteration/0.1.10/package.tgz
+30 verbose request uri https://registry.npmjs.org/bookshelf-filteration
+31 verbose request sending authorization for write operation
+32 info attempt registry request try #1 at 1:50:03 PM
+33 verbose request id 77d561ffcff84c61
+34 http request PUT https://registry.npmjs.org/bookshelf-filteration
+35 http 403 https://registry.npmjs.org/bookshelf-filteration
+36 verbose headers { 'content-type': 'application/json',
+36 verbose headers   'cache-control': 'max-age=300',
+36 verbose headers   'content-length': '96',
+36 verbose headers   'accept-ranges': 'bytes',
+36 verbose headers   date: 'Tue, 14 Feb 2017 16:50:05 GMT',
+36 verbose headers   via: '1.1 varnish',
+36 verbose headers   connection: 'keep-alive',
+36 verbose headers   'x-served-by': 'cache-gru7123-GRU',
+36 verbose headers   'x-cache': 'MISS',
+36 verbose headers   'x-cache-hits': '0',
+36 verbose headers   'x-timer': 'S1487091004.981121,VS0,VE802',
+36 verbose headers   vary: 'Accept-Encoding' }
+37 verbose request invalidating /home/sandro/.npm/registry.npmjs.org/bookshelf-filteration on PUT
+38 error publish Failed PUT 403
+39 verbose stack Error: "You cannot publish over the previously published version 0.1.10." : bookshelf-filteration
+39 verbose stack     at makeError (/home/sandro/tools/node-v6.2.2-linux-x64/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+39 verbose stack     at CachingRegistryClient.<anonymous> (/home/sandro/tools/node-v6.2.2-linux-x64/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+39 verbose stack     at Request._callback (/home/sandro/tools/node-v6.2.2-linux-x64/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+39 verbose stack     at Request.self.callback (/home/sandro/tools/node-v6.2.2-linux-x64/lib/node_modules/npm/node_modules/request/request.js:200:22)
+39 verbose stack     at emitTwo (events.js:106:13)
+39 verbose stack     at Request.emit (events.js:191:7)
+39 verbose stack     at Request.<anonymous> (/home/sandro/tools/node-v6.2.2-linux-x64/lib/node_modules/npm/node_modules/request/request.js:1067:10)
+39 verbose stack     at emitOne (events.js:101:20)
+39 verbose stack     at Request.emit (events.js:188:7)
+39 verbose stack     at IncomingMessage.<anonymous> (/home/sandro/tools/node-v6.2.2-linux-x64/lib/node_modules/npm/node_modules/request/request.js:988:12)
+40 verbose statusCode 403
+41 verbose pkgid bookshelf-filteration
+42 verbose cwd /home/sandro/bookshelf-filteration
+43 error Linux 3.13.0-108-generic
+44 error argv "/home/sandro/tools/node-v6.2.2-linux-x64/bin/node" "/home/sandro/tools/node/bin/npm" "publish"
+45 error node v6.2.2
+46 error npm  v3.9.5
+47 error code E403
+48 error "You cannot publish over the previously published version 0.1.10." : bookshelf-filteration
+49 error If you need help, you may report this error at:
+49 error     <https://github.com/npm/npm/issues>
+50 verbose exit [ 1, true ]
