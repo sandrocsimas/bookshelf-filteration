@@ -50,32 +50,20 @@ describe('validations', function() {
     });
   });
 
-  it('should set attribute to null when notBlank validation is setted to true', function() {
+  it('should set attribute to null when field has length validation', function() {
     return models.User.forge({first_name: 'Sandro', last_name: 'Simas', email: 'sandro.csimas@gmail.com', password: '123456'}).save().then(function(user) {
-      // Attribute can be setted to null but not to blank because of notBlank validation
       return models.User.forge({id: user.id}).save({last_name: null}, {patch: true});
     }).then(function(user) {
       expect(user.get('last_name')).to.be.null;
     });
   });
 
-  it('should not update attribute to empty when notBlank validation is setted to true', function() {
+  it('should not update attribute to empty when field has length validation', function() {
     return models.User.forge({first_name: 'Sandro', last_name: 'Simas', email: 'sandro.csimas@gmail.com', password: '123456'}).save().then(function(user) {
-      // Attribute can be setted to null but not to empty because of notBlank validation
       return models.User.forge({id: user.id}).save({last_name: ''}, {patch: true});
     }).catch(ValidationError, function(err) {
       expect(err.errors).to.have.length(1);
-      expect(err.errors[0]).to.deep.equal({type: 'invalid', attribute: 'last_name', messages: ['Last name can\'t be blank']});
-    });
-  });
-
-  it('should not update attribute to blank when notBlank validation is setted to true', function() {
-    return models.User.forge({first_name: 'Sandro', last_name: 'Simas', email: 'sandro.csimas@gmail.com', password: '123456'}).save().then(function(user) {
-      // Attribute can be setted to null but not to blank because of notBlank validation
-      return models.User.forge({id: user.id}).save({last_name: '       '}, {patch: true});
-    }).catch(ValidationError, function(err) {
-      expect(err.errors).to.have.length(1);
-      expect(err.errors[0]).to.deep.equal({type: 'invalid', attribute: 'last_name', messages: ['Last name can\'t be blank']});
+      expect(err.errors[0]).to.deep.equal({type: 'invalid', attribute: 'last_name', messages: ['Last name is too short (minimum is 3 characters)']});
     });
   });
 
@@ -105,9 +93,9 @@ describe('validations', function() {
       throw new Error('User should not be saved');
     }).catch(ValidationError, function(err) {
       expect(err.errors).to.have.length(3);
-      expect(err.errors[0]).to.deep.equal({type: 'required', attribute: 'first_name', messages: ['Attribute first_name is required']});
-      expect(err.errors[1]).to.deep.equal({type: 'required', attribute: 'email', messages: ['Attribute email is required']});
-      expect(err.errors[2]).to.deep.equal({type: 'required', attribute: 'password', messages: ['Attribute password is required']});
+      expect(err.errors[0]).to.deep.equal({type: 'invalid', attribute: 'first_name', messages: ['Attribute first_name is required']});
+      expect(err.errors[1]).to.deep.equal({type: 'invalid', attribute: 'email', messages: ['Attribute email is required']});
+      expect(err.errors[2]).to.deep.equal({type: 'invalid', attribute: 'password', messages: ['Attribute password is required']});
     });
   });
 
@@ -116,7 +104,7 @@ describe('validations', function() {
       throw new Error('User should not be saved');
     }).catch(ValidationError, function(err) {
       expect(err.errors).to.have.length(1);
-      expect(err.errors[0]).to.deep.equal({type: 'required', attribute: 'password', messages: ['Attribute password is required']});
+      expect(err.errors[0]).to.deep.equal({type: 'invalid', attribute: 'password', messages: ['Attribute password is required']});
     });
   });
 

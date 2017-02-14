@@ -5,7 +5,7 @@ var User = Bookshelf.Model.extend({
   tableName: 'user',
   validations: {
     first_name: {presence: true, length: {minimum: 3}},
-    last_name: {notBlank: true, length: {minimum: 3}},
+    last_name: {length: {minimum: 3}},
     email: {presence: true, email: true},
     password: {presence: true, length: {minimum: 3}},
     phone: {format: /\+\d{2} \d{2} \d{4,5}\-\d{4}/}
@@ -22,7 +22,7 @@ var UserWithNoFilters = Bookshelf.Model.extend({
   tableName: 'user',
   validations: {
     first_name: {presence: true, length: {minimum: 3}},
-    last_name: {notBlank: true, length: {minimum: 3}},
+    last_name: {length: {minimum: 3}},
     email: {presence: true, email: true},
     password: {presence: true, length: {minimum: 3}},
     phone: {format: /\+\d{2} \d{2} \d{4,5}\-\d{4}/}

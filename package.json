@@ -33,9 +33,10 @@
     "validate.js": "*"
   },
   "devDependencies": {
-    "chai": "*",
     "bookshelf": "*",
+    "chai": "*",
     "knex": "*",
+    "mocha": "*",
     "mysql": "*"
   }
 }
